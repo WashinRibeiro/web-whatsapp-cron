@@ -1,3 +1,57 @@
-<h1>
-  Hello world!
-</h1>
+<main class="w-screen h-screen mx-auto flex flex-col justify-center items-start gap-4 p-8 bg-yellow-200 lg:flex-row">
+
+  <section class="w-full rounded-2xl shadow-md flex flex-col gap-2 p-7 bg-white lg:w-1/2">
+
+    <header class="w-full flex flex-row items-center mb-4">
+      <img src="../assets/logo.png" alt="Logo" class="w-16 rounded-full">
+      <h1 class="text !m-0">Clube da Promo</h1>
+    </header>
+
+    <h2 class="text-2xl !mt-0">Agende a mensagem:</h2>
+    <form [formGroup]="form" class="flex flex-col">
+      <mat-form-field>
+        <mat-label>Selecione o Grupo</mat-label>
+        <mat-select formControlName="chatId">
+          <mat-option *ngFor="let chat of chats" [value]="chat.id">{{ chat.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Mensagem</mat-label>
+        <textarea matInput formControlName="body"></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Data e Hora</mat-label>
+        <input type="datetime-local" matInput formControlName="time">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="addSchedule()">Enviar</button>
+    </form>
+
+  </section>
+
+  <section class="w-full rounded-2xl shadow-md flex flex-col gap-2 p-7 bg-white lg:w-1/2">
+
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="chatId">
+        <mat-header-cell *matHeaderCellDef> Grupo </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.chatId}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="body">
+        <mat-header-cell *matHeaderCellDef> Mensagem </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.body}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="time">
+        <mat-header-cell *matHeaderCellDef> Data e Hora </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.time}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+  </section>
+</main>
