@@ -12,7 +12,7 @@
       <mat-form-field>
         <mat-label>Selecione o Grupo</mat-label>
         <mat-select formControlName="chatId">
-          <mat-option *ngFor="let chat of chats" [value]="chat.id">{{ chat.name }}</mat-option>
+          <mat-option *ngFor="let chat of chats" [value]="chat.id" (click)="selectChat(chat)">{{ chat.name }}</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -26,7 +26,7 @@
         <input type="datetime-local" matInput formControlName="time">
       </mat-form-field>
 
-      <button mat-raised-button color="primary" (click)="addSchedule()">Enviar</button>
+      <button mat-raised-button color="primary" (click)="saveSchedule()">Salvar</button>
     </form>
 
   </section>
@@ -34,19 +34,31 @@
   <section class="w-full rounded-2xl shadow-md flex flex-col gap-2 p-7 bg-white lg:w-1/2">
 
     <mat-table [dataSource]="dataSource">
-      <ng-container matColumnDef="chatId">
+      <ng-container matColumnDef="chatName">
         <mat-header-cell *matHeaderCellDef> Grupo </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.chatId}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{ element.chatName }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="body">
         <mat-header-cell *matHeaderCellDef> Mensagem </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.body}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{ element.body }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="time">
         <mat-header-cell *matHeaderCellDef> Data e Hora </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.time}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{ element.time | date: 'dd/MM/yyyy HH:mm'  }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="editSchedule(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteSchedule(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

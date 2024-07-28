@@ -5,25 +5,47 @@ import { IChat } from '../models/chats';
 import { ISchedule } from '../models/schedule';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChatsService {
-  
-  apiURLJsonServer = 'http://localhost:3006';
   apiURLChats = 'http://localhost:3007';
+  apiURLJsonServer = 'http://localhost:3006';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
     }),
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getChats(): Observable<IChat[]> {
-    return this.http.get<IChat[]>(this.apiURLChats + '/chats')
+    return this.http.get<IChat[]>(this.apiURLChats + '/chats');
+  }
+
+  getSchedules(): Observable<ISchedule[]> {
+    return this.http.get<ISchedule[]>(this.apiURLJsonServer + '/schedules');
   }
 
   postSchedule(schedule: ISchedule): Observable<void> {
-    return this.http.post<void>(this.apiURLJsonServer + '/schedules', schedule, this.httpOptions)
+    return this.http.post<void>(
+      this.apiURLJsonServer + '/schedules',
+      schedule,
+      this.httpOptions
+    );
+  }
+
+  updateSchedule(schedule: ISchedule): Observable<void> {
+    return this.http.put<void>(
+      `${this.apiURLJsonServer}/schedules/${schedule.id}`,
+      schedule,
+      this.httpOptions
+    );
+  }
+
+  deleteSchedule(id: number): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiURLJsonServer}/schedules/${id}`,
+      this.httpOptions
+    );
   }
 }
